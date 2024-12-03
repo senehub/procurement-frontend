@@ -22,8 +22,8 @@ export default function PageBreadcrumb() {
   const segments = pathname.split("/").filter(Boolean);
 
   return (
-    <Breadcrumb>
-      <BreadcrumbList>
+    <Breadcrumb className="">
+      <BreadcrumbList className="h-[25px] items-end">
         <BreadcrumbItem>
           <BreadcrumbLink href="/">Home</BreadcrumbLink>
         </BreadcrumbItem>
@@ -34,14 +34,20 @@ export default function PageBreadcrumb() {
           <>
             <BreadcrumbItem>
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-1">
-                  <BreadcrumbEllipsis className="h-4 w-4" />
+                <DropdownMenuTrigger className="p-0 flex items-center gap-1">
+                  <BreadcrumbEllipsis className="h-full w-4" />
                   <span className="sr-only">Toggle menu</span>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start">
-                  <DropdownMenuItem>Documentation</DropdownMenuItem>
-                  <DropdownMenuItem>Themes</DropdownMenuItem>
-                  <DropdownMenuItem>GitHub</DropdownMenuItem>
+                  <DropdownMenuItem className="capitalize">
+                    Documentation
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="capitalize">
+                    Themes
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="capitalize">
+                    GitHub
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </BreadcrumbItem>
@@ -54,6 +60,7 @@ export default function PageBreadcrumb() {
           <>
             <BreadcrumbItem key={index}>
               <BreadcrumbLink
+                className="capitalize"
                 href={`/${segments.slice(0, index + 1).join("/")}`}
               >
                 {segment.charAt(0).toUpperCase() + segment.slice(1)}
@@ -67,9 +74,8 @@ export default function PageBreadcrumb() {
           </>
         ))}
         <BreadcrumbItem className="min-h-4">
-          <BreadcrumbPage>
-            {segments.at(-1)?.charAt(0).toUpperCase()! +
-              segments.at(-1)?.slice(1)}
+          <BreadcrumbPage className="capitalize">
+            {segments.at(-1)}
           </BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>

@@ -27,7 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`bg-background text-foreground`}>
+      <body
+        className={`${geistMono.className} ${geistSans.className} bg-background text-foreground`}
+      >
         <Navbar />
         {children}
         <Footer />

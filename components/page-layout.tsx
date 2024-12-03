@@ -1,7 +1,8 @@
+import { ReactNode } from "react";
 import PageBreadcrumb from "./page-breadcrums";
 
 type Props = {
-  children: any;
+  children: ReactNode;
 };
 
 export default function PageLayout({ children }: Props) {

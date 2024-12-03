@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BarChart, DollarSign, ShoppingCart, Users } from "lucide-react";
-import PageContent from "@/components/page-content";
-import PageHeader from "@/components/page-header";
 import PageLayout from "@/components/page-layout";
+// import PageHeader from "@/components/page-header";
+import PageContent from "@/components/page-content";
 
 export default function DashboardPage() {
   return (

@@ -12,6 +12,9 @@
 # next.js
 /.next/
 /out/
+/public/ios
+/public/android
+/public/windows11
 
 # production
 /build
