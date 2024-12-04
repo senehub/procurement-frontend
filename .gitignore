@@ -18,6 +18,8 @@
 
 # production
 /build
+/drizzle
+.env
 
 # misc
 .DS_Store

@@ -1,20 +1,27 @@
-import Link from 'next/link'
-import { Button } from "@/components/ui/button"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import PageLayout from '@/components/page-layout'
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import PageLayout from "@/components/page-layout";
 
 const groups = [
   { id: 1, name: "Administrators", members: 5 },
   { id: 2, name: "Procurement Officers", members: 12 },
   { id: 3, name: "Vendors", members: 50 },
-]
+];
 
 export default function GroupsPage() {
   return (
     <PageLayout>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Groups</h1>
-        <Link href="/auth-manager/groups/create">
+        <Link href="/auth-manager/groups/new">
           <Button>Create New Group</Button>
         </Link>
       </div>
@@ -43,6 +50,5 @@ export default function GroupsPage() {
         </TableBody>
       </Table>
     </PageLayout>
-  )
+  );
 }
-

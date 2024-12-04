@@ -11,7 +11,7 @@ export default function ProcurementPage() {
       <PageHeader
         heading="Procurement"
         actions={[
-          <Link key={"/procurement/create"} href="/procurement/create">
+          <Link key={"/procurement/new"} href="/procurement/new">
             <Button>Create New Procurement</Button>
           </Link>,
         ]}

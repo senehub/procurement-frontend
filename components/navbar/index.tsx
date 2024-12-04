@@ -21,19 +21,17 @@ const navItems = [
     href: "/dashboard",
   },
   {
-    title: "Procurement",
-    href: "/procurement",
-  },
-
-  {
     title: "Organization",
     href: "/organization",
   },
-
   {
-    title: "Vendors",
-    href: "/vendors",
+    title: "Procurement",
+    href: "/procurement",
   },
+  // {
+  //   title: "Vendors",
+  //   href: "/vendors",
+  // },
   {
     title: "Suppliers",
     href: "/suppliers",
@@ -56,38 +54,10 @@ export function Navbar() {
       <nav className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="text-2xl font-bold text-primary">
-            E-Procurement
+            Procure
           </Link>
           <div className="hidden md:flex items-center space-x-4">
             {navItems.map((item) => (
-              // <React.Fragment key={item.title}>
-              //   {item.subItems ? (
-              //     <DropdownMenu>
-              //       <DropdownMenuTrigger asChild>
-              //         <Button variant="ghost" className={cn(
-              //           "text-sm font-medium transition-colors hover:text-primary",
-              //           pathname.startsWith(item.href) ? "text-primary" : "text-muted-foreground"
-              //         )}>
-              //           {item.title}
-              //         </Button>
-              //       </DropdownMenuTrigger>
-              //       <DropdownMenuContent align="end">
-              //         {item.subItems.map((subItem) => (
-              //           <DropdownMenuItem key={subItem.href} asChild>
-              //             <Link href={subItem.href}>{subItem.title}</Link>
-              //           </DropdownMenuItem>
-              //         ))}
-              //       </DropdownMenuContent>
-              //     </DropdownMenu>
-              //   ) : (
-              //     <Link href={item.href} className={cn(
-              //       "text-sm font-medium transition-colors hover:text-primary",
-              //       pathname === item.href ? "text-primary" : "text-muted-foreground"
-              //     )}>
-              //       {item.title}
-              //     </Link>
-              //   )}
-              // </React.Fragment>
               <Link
                 key={item.href}
                 href={item.href}
@@ -105,7 +75,7 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon" className="rounded-[5px]">
+                <Button variant="outline" size="icon" className="rounded">
                   MT
                 </Button>
               </DropdownMenuTrigger>
