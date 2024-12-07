@@ -16,7 +16,8 @@ export const Staff = pgTable("staffs", {
     .primaryKey()
     .$defaultFn(() => UUIDv7())
     .notNull(),
-  unitId: uuid("unitId").notNull(),
+  unitId: uuid("unit_id").notNull(),
+  userId: varchar("user_id", { length: 100 }),
 
   avatar: text("avatar"),
   phone: varchar("phone", { length: 50 }),

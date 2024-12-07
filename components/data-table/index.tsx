@@ -11,9 +11,9 @@ import {
 
 import { Card } from "@/components/ui/card";
 import { Button } from "../ui/button";
-import { Columns2Icon, DownloadIcon } from "lucide-react";
+import { Columns2Icon, DownloadIcon, Loader2 } from "lucide-react";
 import { downloadHTMLAsPdf } from "@/lib/client/htmt2PDF";
-import { useRef } from "react";
+import { Fragment, ReactNode, useRef } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -32,6 +32,8 @@ interface DataTableProps<TD, TV> {
 
   rowId: keyof TD;
   onRowClick?: (row: TD) => void;
+
+  actionButtons?: ReactNode[];
 
   tableOptions?: Partial<TableOptions<TD>>;
 }
@@ -75,10 +77,12 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+  const isLoading = props.data === undefined;
+
   return (
     <Card className="overflow-hidden p-0" ref={dataTableRef}>
       <div className="border-b p-2">
-        <div className="flex w-[90svh] sm:w-[90%] mx-auto items-center justify-between">
+        <div className="flex mx-auto flex-wrap gap-2 px-2 items-center justify-between">
           <div className="inline-flex gap-2">
             <Button
               data-ignore-print
@@ -99,6 +103,10 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
             >
               <DownloadIcon />
             </Button>
+            {props.actionButtons &&
+              props.actionButtons.map((action, index) => (
+                <Fragment key={index}>{action}</Fragment>
+              ))}
           </div>
         </div>
       </div>
@@ -159,9 +167,10 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
               <TableRow>
                 <TableCell
                   colSpan={props.columns.length + 1}
-                  className="h-24 text-center"
+                  className="h-24 text-center flex items-center justify-center"
                 >
-                  No Results.
+                  {isLoading && <Loader2 className="aminate-spin w-6 h-6" />}
+                  {!isLoading && <span>No Results.</span>}
                 </TableCell>
               </TableRow>
             )}

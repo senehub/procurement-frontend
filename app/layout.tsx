@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import AppQueryClient from "./query-client";
@@ -6,6 +6,11 @@ import { Toaster } from "@/components/ui/toaster";
 import { Navbar } from "@/components/navbar";
 import Footer from "@/components/footer";
 import "./globals.css";
+import { AuthenticationProvider } from "@/providers/auth-provider";
+import AppProvider from "@/providers/app-provider";
+import AppThemeProvider from "@/providers/theme-provider";
+import { auth } from "@clerk/nextjs/server";
+import Loading from "./loading";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,18 +32,48 @@ type Props = {
   children: ReactNode;
 };
 
-export default function RootLayout({ children }: Props) {
+export default async function RootLayout({ children }: Props) {
+  const authData = await auth();
+
+  const userType = authData.sessionClaims?.userType;
+  const onBoarded = authData.sessionClaims?.onBoarded;
+  const hasDefaultPassword = authData.sessionClaims?.hasDefaultPassword;
+
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistMono.className} ${geistSans.className} bg-background text-foreground`}
       >
-        <AppQueryClient>
-          <Navbar />
-          {children}
-          <Toaster />
-          <Footer />
-        </AppQueryClient>
+        <AppThemeProvider>
+          <AuthenticationProvider>
+            <AppQueryClient>
+              <AppProvider
+                userId={authData.userId}
+                sessionClaims={authData.sessionClaims}
+              >
+                <Suspense fallback={<Loading />}>
+                  {authData.userId && (
+                    <Navbar onBoarded={onBoarded} userType={userType} />
+                  )}
+                  {/* <pre>
+                  <code>{JSON.stringify(authData.sessionClaims, null, 4)}</code>
+                </pre> */}
+                  {hasDefaultPassword && (
+                    <div className="p-6 border-destructive border-b bg-destructive/10">
+                      <p className="text-destructive max-w-[70ch] mx-auto text-center text-sm">
+                        Your password has not been updated. Please change your
+                        default password to ensure your account&apos;s security.
+                      </p>
+                    </div>
+                  )}
+                  {children}
+                </Suspense>
+                <Toaster />
+                {authData.userId && <Footer />}
+              </AppProvider>
+            </AppQueryClient>
+          </AuthenticationProvider>
+        </AppThemeProvider>
       </body>
     </html>
   );

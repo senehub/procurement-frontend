@@ -1,9 +1,21 @@
 import { Requisition, RequisitionRelations } from "./pr";
 import { RequisitionItem, RequisitionItemRelations } from "./pr.item";
-import { RequisitionApprovalStep } from "./pr_approval.step";
-import { RequisitionApprovalMatrix } from "./pr_approval.matrix";
-import { RequisitionApprovalWorkflow } from "./pr_approval.workflow";
-import { RequisitionApprovalWorkflowStep } from "./pr_approval.workflow.step";
+import {
+  RequisitionApprovalStep,
+  RequisitionApprovalStepRelations,
+} from "./pr_approval.step";
+import {
+  RequisitionApprovalWorkflowStep,
+  RequisitionApprovalWorkflowStepRelations,
+} from "./pr_approval.workflow.step";
+import {
+  RequisitionApprovalWorkflow,
+  RequisitionApprovalWorkflowRelations,
+} from "./pr_approval.workflow";
+import {
+  RequisitionApprovalMatrix,
+  RequisitionApprovalMatrixRelations,
+} from "./pr_approval.matrix";
 import {
   RequisitionApprovalRecord,
   RequisitionApprovalRelations,
@@ -18,11 +30,15 @@ export {
   RequisitionItemRelations,
   //
   RequisitionApprovalStep,
+  RequisitionApprovalStepRelations,
   //
   RequisitionApprovalMatrix,
+  RequisitionApprovalMatrixRelations,
   //
   RequisitionApprovalWorkflow,
   RequisitionApprovalWorkflowStep,
+  RequisitionApprovalWorkflowRelations,
+  RequisitionApprovalWorkflowStepRelations,
   //
   RequisitionApprovalRecord,
   RequisitionApprovalRelations,

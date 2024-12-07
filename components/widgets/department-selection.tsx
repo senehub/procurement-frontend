@@ -19,7 +19,6 @@ type Props = {
 
 export default function DepartmentSelection(props: Props) {
   const query = useQuery({
-    staleTime: Infinity,
     queryKey: ["departments-selection"],
     queryFn: async () => getDepartments(),
   });

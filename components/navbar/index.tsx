@@ -4,16 +4,17 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { LockIcon, LogOutIcon, Menu, Settings } from "lucide-react";
+// import { Button } from "@/components/ui/button";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuGroup,
+//   DropdownMenuItem,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
+import ThemeSwitcher from "../ui/theme-switcher";
+import UserProfileButton from "@/components/user-button";
 
 const navItems = [
   {
@@ -46,33 +47,47 @@ const navItems = [
   },
 ];
 
-export function Navbar() {
+type Props = {
+  userType?: "vendor" | "staff" | "admin";
+  onBoarded?: boolean;
+};
+
+export function Navbar({ onBoarded, userType }: Props) {
   const pathname = usePathname();
 
   return (
     <header className="bg-background border-b">
       <nav className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="text-2xl font-bold text-primary">
+          <Link
+            href={onBoarded ? "/" : "#"}
+            className="text-2xl font-bold text-primary"
+          >
             Procure
           </Link>
-          <div className="hidden md:flex items-center space-x-4">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "text-sm font-medium transition-colors hover:text-primary",
-                  pathname === item.href
-                    ? "text-primary"
-                    : "text-muted-foreground"
-                )}
-              >
-                {item.title}
-              </Link>
-            ))}
-          </div>
+          {onBoarded && userType !== "vendor" && (
+            <div className="hidden md:flex items-center space-x-4">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    "text-sm font-medium transition-colors hover:text-primary",
+                    pathname === item.href
+                      ? "text-primary"
+                      : "text-muted-foreground"
+                  )}
+                >
+                  {item.title}
+                </Link>
+              ))}
+            </div>
+          )}
           <div className="flex items-center gap-2">
+            <ThemeSwitcher />
+            <UserProfileButton />
+          </div>
+          {/* <div className="flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="icon" className="rounded">
@@ -151,7 +166,7 @@ export function Navbar() {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-          </div>
+          </div> */}
         </div>
       </nav>
     </header>

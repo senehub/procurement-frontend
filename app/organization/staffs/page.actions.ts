@@ -8,6 +8,7 @@ import {
 } from "@/lib/types/organization/staffs";
 import { TypeStaffFormSchema } from "@/lib/db/schema/organization/staffs";
 import { eq } from "drizzle-orm";
+import { _clerkClient } from "@/lib/server/clerk";
 
 export async function getStaffs(
   limit?: number,
@@ -136,10 +137,32 @@ export async function getStaffUpdateData(staffId: string) {
 
 export async function createStaff(data: TypeStaffFormSchema) {
   try {
-    const results = await DB.insert(Staff)
-      .values(data)
-      .returning({ id: Staff.id });
-    return results.at(0);
+    return await DB.transaction(async (tx) => {
+      const results = await tx
+        .insert(Staff)
+        .values(data)
+        .returning({ id: Staff.id });
+
+      await _clerkClient.users.createUser({
+        emailAddress: [data.email],
+        password: "prc@2k2*",
+        privateMetadata: {},
+        skipPasswordChecks: true,
+        lastName: data.lastName,
+        firstName: data.firstName,
+        publicMetadata: {
+          onBoarded: true,
+          userType: "staff",
+          unitId: data.unitId,
+          staffId: results[0].id,
+          hasDefaultPassword: true,
+        },
+      });
+
+      // TODO notify the user about there new account
+
+      return results.at(0);
+    });
   } catch (error) {
     throw error;
   }
@@ -147,11 +170,32 @@ export async function createStaff(data: TypeStaffFormSchema) {
 
 export async function updateStaff(staffId: string, data: TypeStaffFormSchema) {
   try {
-    const results = await DB.update(Staff)
-      .set(data)
-      .where(eq(Staff.id, staffId))
-      .returning({ id: Staff.id });
-    return results.at(0);
+    return await DB.transaction(async (tx) => {
+      const results = await tx
+        .update(Staff)
+        .set(data)
+        .where(eq(Staff.id, staffId))
+        .returning({ id: Staff.id, userId: Staff.userId });
+
+      await Promise.all([
+        _clerkClient.users.updateUser(results[0].userId!, {
+          lastName: data.lastName,
+          firstName: data.firstName,
+        }),
+        _clerkClient.users.updateUserMetadata(results[0].userId!, {
+          publicMetadata: {
+            userType: "staff",
+            unitId: data.unitId,
+            staffId: results[0].id,
+            hasDefaultPassword: true,
+          },
+        }),
+      ]);
+
+      // TODO notify the user about there new account
+
+      return results.at(0);
+    });
   } catch (error) {
     throw error;
   }

@@ -4,6 +4,8 @@ import { v7 as UUIDv7 } from "uuid";
 import { z } from "zod";
 import { Staff, Unit } from "../../organization";
 import { RequisitionItem, RequisitionItemFormSchema } from "./pr.item";
+import { RequisitionApprovalWorkflow } from "./pr_approval.workflow";
+import { RequisitionApprovalRecord } from "./pr_approval.record";
 
 export const Requisition = pgTable("requisitions", {
   id: uuid("id")
@@ -13,7 +15,7 @@ export const Requisition = pgTable("requisitions", {
   staffId: uuid("staff_id").notNull(),
   staffUnitId: uuid("staff_unit_id").notNull(),
 
-  approvalWorkflowId: uuid("approval_workflow_id"),
+  approvalWorkflowId: uuid("approval_workflow_id").notNull(),
 
   title: varchar("title", { length: 50 }),
   comment: text("comment")
@@ -48,6 +50,13 @@ export const RequisitionRelations = relations(Requisition, ({ one, many }) => {
     staff: one(Staff, {
       fields: [Requisition.staffId],
       references: [Staff.id],
+    }),
+    approvalWorkflow: one(RequisitionApprovalWorkflow, {
+      fields: [Requisition.approvalWorkflowId],
+      references: [RequisitionApprovalWorkflow.id],
+    }),
+    approvalRecords: many(RequisitionApprovalRecord, {
+      relationName: "approval_records",
     }),
   };
 });

@@ -4,10 +4,36 @@ import { BarChart, DollarSign, ShoppingCart, Users } from "lucide-react";
 import PageLayout from "@/components/page-layout";
 // import PageHeader from "@/components/page-header";
 import PageContent from "@/components/page-content";
+import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+import SupplierDashboard from "./vendor";
+import { Suspense } from "react";
+import StaffDashboard from "./staff";
+import { PageProps } from "@/lib/types";
 
-export default function DashboardPage() {
+export default async function DashboardPage(props: PageProps) {
+  console.log(props);
+
+  const { userId, sessionClaims } = await auth();
+
+  if (sessionClaims?.userType === "vendor") {
+    return (
+      <Suspense fallback="Loading Dashboard....">
+        <SupplierDashboard userId={userId!} />
+      </Suspense>
+    );
+  }
+  if (sessionClaims?.userType === "staff") {
+    return (
+      <Suspense fallback="Loading Dashboard....">
+        <StaffDashboard userId={userId!} />
+      </Suspense>
+    );
+  }
+
   return (
     <PageLayout>
+      sessionClaims: {sessionClaims?.userType}
       {/* <PageHeader heading="Dashboard" /> */}
       <PageContent className="!mt-0">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -95,7 +121,11 @@ export default function DashboardPage() {
             <CardContent>
               <div className="grid grid-cols-2 gap-4">
                 <Button>Create New RFQ</Button>
-                <Button>Invite Supplier</Button>
+                <Button asChild>
+                  <Link href={"/suppliers/invitations?new"}>
+                    Invite Supplier
+                  </Link>
+                </Button>
                 <Button>View Active Bids</Button>
                 <Button>Generate Reports</Button>
               </div>

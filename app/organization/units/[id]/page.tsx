@@ -29,7 +29,7 @@ export default async function Page(props: PageProps) {
       <PageHeader
         heading={unit.name}
         actions={[
-          <Link key="edit" href={"/organization/units/${unit.id}/edit"}>
+          <Link key="edit" href={`/organization/units/${unitId}/edit`}>
             <Button variant={"outline"}>Update</Button>
           </Link>,
           <Button key={"delete"} variant="destructive">

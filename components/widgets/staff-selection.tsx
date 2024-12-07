@@ -19,7 +19,6 @@ type Props = {
 
 export default function StaffSelection(props: Props) {
   const query = useQuery({
-    staleTime: Infinity,
     queryKey: ["staffs-selection"],
     queryFn: async () => getStaffs(),
   });

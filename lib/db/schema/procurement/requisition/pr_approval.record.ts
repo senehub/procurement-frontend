@@ -16,6 +16,8 @@ export const RequisitionApprovalRecord = pgTable(
     staffId: uuid("staff_id").notNull(),
     requisitionId: uuid("requisition_id").notNull(),
 
+    approvalStepId: uuid("approval_step_id").notNull(),
+
     comment: text("comment").default(""),
     approval: text("priority", { enum: ["pending", "accepted", "declined"] })
       .notNull()
@@ -40,6 +42,7 @@ export const RequisitionApprovalRelations = relations(
         fields: [RequisitionApprovalRecord.staffId],
       }),
       requisition: one(Requisition, {
+        relationName: "approval_records",
         references: [Requisition.id],
         fields: [RequisitionApprovalRecord.requisitionId],
       }),

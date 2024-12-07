@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import PageLayout from "@/components/page-layout";
 import PageHeader from "@/components/page-header";
 import PageContent from "@/components/page-content";
@@ -21,9 +27,9 @@ export default function ProcurementPage() {
           <Card>
             <CardHeader>
               <CardTitle>Requisitions</CardTitle>
+              <CardDescription>Manage procurement requisitions</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="mb-4">Manage procurement requisitions</p>
               <Link href="/procurement/requisitions">
                 <Button>View Requisitions</Button>
               </Link>
@@ -32,9 +38,9 @@ export default function ProcurementPage() {
           <Card>
             <CardHeader>
               <CardTitle>Contracts</CardTitle>
+              <CardDescription> Manage procurement contracts</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="mb-4">Manage procurement contracts</p>
               <Link href="/procurement/contracts">
                 <Button>View Contracts</Button>
               </Link>
@@ -43,11 +49,24 @@ export default function ProcurementPage() {
           <Card>
             <CardHeader>
               <CardTitle>Invoices</CardTitle>
+              <CardDescription> Manage procurement invoices</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="mb-4">Manage procurement invoices</p>
               <Link href="/procurement/invoices">
                 <Button>View Invoices</Button>
+              </Link>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Approval Managament</CardTitle>
+              <CardDescription>
+                Manage the approval process for procurement requests
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link href="/procurement/approvals/">
+                <Button>Manage Approval</Button>
               </Link>
             </CardContent>
           </Card>

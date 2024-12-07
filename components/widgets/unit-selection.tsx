@@ -19,7 +19,6 @@ type Props = {
 
 export default function UnitSelection(props: Props) {
   const query = useQuery({
-    staleTime: Infinity,
     queryKey: ["units-selection"],
     queryFn: async () => getUnits(),
   });

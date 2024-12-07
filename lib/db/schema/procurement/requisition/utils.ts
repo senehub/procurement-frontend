@@ -1,32 +1,24 @@
 import DB from "@/lib/db/conn";
 import { Requisition } from "./pr";
 import { RequisitionApprovalMatrix } from "./pr_approval.matrix";
-import { desc, eq } from "drizzle-orm";
+import { desc } from "drizzle-orm";
 
 type InterfaceMatrixArray = (typeof RequisitionApprovalMatrix.$inferInsert)[];
 
-export async function getMatchingApprovalMatrix(requisitionId: string) {
-  const requisition = await DB.query.Requisition.findFirst({
-    where: eq(Requisition.id, requisitionId),
-    columns: {
-      priority: true,
-    },
-    with: {
-      items: {
-        columns: {
-          quantity: true,
-          unitPrice: true,
-        },
-      },
-      unit: {
-        columns: {
-          id: true,
-          departmentId: true,
-        },
-      },
-    },
-  });
+type Requisition = {
+  priority: string;
+  items: { unitPrice: number; quantity: number }[];
+};
 
+type RequisitionUnit = {
+  id: string;
+  departmentId: string;
+};
+
+export async function getMatchingApprovalMatrix(
+  requisition: Requisition,
+  unit: RequisitionUnit
+) {
   if (!requisition) return null;
 
   const totalPrice = requisition.items.reduce(
@@ -48,12 +40,12 @@ export async function getMatchingApprovalMatrix(requisitionId: string) {
 
     // Check if the matrix's unit ID matches the requisition's unit ID
     if (matrix.unitId) {
-      if (matrix.unitId != requisition.unit.id) continue;
+      if (matrix.unitId != unit.id) continue;
     }
 
     // Check if the matrix's department ID matches the requisition's unit department ID
     if (matrix.departmentId) {
-      if (matrix.departmentId != requisition.unit.departmentId) continue;
+      if (matrix.departmentId != unit.departmentId) continue;
     }
     // If all checks pass, add the matrix to the matching matrixes array
     matchingMatrixes.push(matrix);

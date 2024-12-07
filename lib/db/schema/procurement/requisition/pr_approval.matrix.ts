@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   pgTable,
   real,
@@ -8,6 +9,8 @@ import {
 } from "drizzle-orm/pg-core";
 import { v7 as UUIDv7 } from "uuid";
 import { z } from "zod";
+import { Department, Unit } from "../../organization";
+import { RequisitionApprovalWorkflow } from "./pr_approval.workflow";
 
 export const RequisitionApprovalMatrix = pgTable(
   "requisition_approval_matrix",
@@ -35,6 +38,26 @@ export const RequisitionApprovalMatrix = pgTable(
       .$defaultFn(() => new Date())
       .$onUpdate(() => new Date())
       .notNull(),
+  }
+);
+
+export const RequisitionApprovalMatrixRelations = relations(
+  RequisitionApprovalMatrix,
+  ({ one }) => {
+    return {
+      unit: one(Unit, {
+        references: [Unit.id],
+        fields: [RequisitionApprovalMatrix.unitId],
+      }),
+      department: one(Department, {
+        references: [Department.id],
+        fields: [RequisitionApprovalMatrix.departmentId],
+      }),
+      workflow: one(RequisitionApprovalWorkflow, {
+        references: [RequisitionApprovalWorkflow.id],
+        fields: [RequisitionApprovalMatrix.workflowId],
+      }),
+    };
   }
 );
 

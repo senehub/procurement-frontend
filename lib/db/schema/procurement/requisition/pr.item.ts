@@ -57,7 +57,7 @@ export const RequisitionItemFormSchema = z.object({
   name: z.string().max(50).min(3),
   quantity: z.number().int().positive(),
   unitPrice: z.number().positive(),
-  comment: z.string().max(300),
+  comment: z.string().max(300).nullish(),
 });
 
 export type TypeRequisitionItemFormSchema = z.infer<
