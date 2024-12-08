@@ -32,7 +32,8 @@ import { ApprovalDialog } from "./ApprovalDialog";
 import { format } from "date-fns";
 
 export default async function Page({ params }: PageProps) {
-  const requisition = await getRequisitionDetail(params.id);
+  const { id } = await params;
+  const requisition = await getRequisitionDetail(id!);
 
   if (!requisition) return notFound();
 
@@ -56,7 +57,7 @@ export default async function Page({ params }: PageProps) {
           </div>
           <div className="inline-flex gap-2">
             <ApprovalDialog
-              requisitionId={params.id}
+              requisitionId={id!}
               workflow={requisition.approvalWorkflow}
               requisitionStaffId={requisition.staff.id}
               approvalRecords={requisition.approvalRecords}

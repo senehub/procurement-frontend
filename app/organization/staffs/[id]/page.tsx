@@ -16,7 +16,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 
 export default async function Page({ params }: PageProps) {
-  const staffId = params.id;
+  const staffId = (await params).id;
 
   if (!staffId) {
     return redirect("/organization/staffs");

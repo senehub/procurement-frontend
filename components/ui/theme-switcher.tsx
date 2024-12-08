@@ -8,21 +8,39 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./dropdown-menu";
-import { Button } from "./button";
+import { Button, buttonVariants } from "./button";
 import { LaptopIcon, MoonStar, SunIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 export default function ThemeSwitcher() {
   const { setTheme, resolvedTheme } = useTheme();
 
-  if (!resolvedTheme) return null;
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    if (resolvedTheme) {
+      setLoaded(true);
+    }
+  }, [resolvedTheme]);
+
+  if (!loaded) return null;
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button size={"icon"} variant={"ghost"} className="rounded">
+      <DropdownMenuTrigger>
+        <span
+          className={cn(
+            "rounded",
+            ...buttonVariants({
+              variant: "ghost",
+              size: "sm",
+            })
+          )}
+        >
           {resolvedTheme === "light" && <MoonStar />}
           {resolvedTheme === "dark" && <SunIcon />}
-        </Button>
+        </span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup className="space-y-1.5">

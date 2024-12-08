@@ -29,13 +29,13 @@ const ApprovalMatrixFormLazy = lazy(
 );
 
 export default async function page(props: PageProps) {
-  const slug =
-    props.params.slug.toLowerCase() as unknown as (typeof SLUGS)[number];
+  const { id, slug: _s } = await props.params;
+  const slug = _s?.toLowerCase() as unknown as (typeof SLUGS)[number];
 
   if (!SLUGS.includes(slug)) {
     return notFound();
   }
-  const objectId: string = props.params.id;
+  const objectId: string = id!;
 
   type PageData =
     | {

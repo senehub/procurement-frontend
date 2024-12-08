@@ -196,7 +196,11 @@ const MultiSelector = ({
         setInputValue,
         activeIndex,
         setActiveIndex,
-        ref: inputRef,
+        // ref: inputRef || undefined,
+        // ref: inputRef.current || undefined,
+        ref:
+          (inputRef as unknown as React.RefObject<HTMLInputElement>) ||
+          undefined,
         handleSelect,
       }}
     >

@@ -13,7 +13,7 @@ import { MailIcon, PhoneIcon, UsersIcon } from "lucide-react";
 import { format } from "date-fns";
 
 export default async function Page(props: PageProps) {
-  const unitId = props.params.id;
+  const unitId = (await props.params).id;
 
   if (!unitId) {
     return redirect("/organization/units");

@@ -13,7 +13,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 
 export default async function Page(props: PageProps) {
-  const departmentId = props.params.id;
+  const departmentId = (await props.params).id;
 
   if (!departmentId) {
     return redirect("/organization/departments");

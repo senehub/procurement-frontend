@@ -3,10 +3,11 @@ import PageLayout from "@/components/page-layout";
 import { PageProps } from "@/lib/types";
 
 export default async function page(props: PageProps) {
+  const { slug, id } = await props.params;
   return (
     <PageLayout>
       <PageHeader
-        heading={`${props.params.slug[0].toUpperCase()} ${props.params.slug.slice(
+        heading={`${slug?.[0].toUpperCase()}${slug?.slice(
           1
         )} | Approval Detail`}
       />

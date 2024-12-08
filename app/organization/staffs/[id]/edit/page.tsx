@@ -14,7 +14,7 @@ import PageLayout from "@/components/page-layout";
 import StaffForm from "../../new/StaffForm";
 
 export default async function Page(props: PageProps) {
-  const staffId = props.params.id;
+  const staffId = (await props.params).id;
 
   if (!staffId) {
     return redirect("/organization/staffs");
@@ -34,7 +34,7 @@ export default async function Page(props: PageProps) {
             <CardDescription>Edit the details of the staff.</CardDescription>
           </CardHeader>
           <CardContent className="pt-5">
-            <StaffForm defaultValues={staff} staffId={props.params.id} />
+            <StaffForm defaultValues={staff} staffId={staffId} />
           </CardContent>
         </Card>
       </PageContent>

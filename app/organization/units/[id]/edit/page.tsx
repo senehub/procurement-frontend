@@ -14,7 +14,7 @@ import PageContent from "@/components/page-content";
 import PageLayout from "@/components/page-layout";
 
 export default async function Page(props: PageProps) {
-  const unitId = props.params.id;
+  const unitId = (await props.params).id;
 
   if (!unitId) {
     return redirect("/organization/units");

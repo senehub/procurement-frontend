@@ -7,7 +7,7 @@ import PageLayout from "@/components/page-layout";
 import RequisitionForm from "../../new/RequisitionForm";
 
 export default async function Page(props: PageProps) {
-  const requisitionId = props.params.id;
+  const requisitionId = (await props.params).id;
 
   if (!requisitionId) {
     return redirect("/organization/staffs");
@@ -23,7 +23,7 @@ export default async function Page(props: PageProps) {
       <PageContent className="!pt- !mt-0">
         <RequisitionForm
           defaultValues={requisition}
-          requisitionId={props.params.id}
+          requisitionId={requisitionId}
         />
       </PageContent>
     </PageLayout>

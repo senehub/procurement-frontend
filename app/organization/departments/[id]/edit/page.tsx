@@ -15,7 +15,7 @@ import PageLayout from "@/components/page-layout";
 import DepartmentForm from "../../new/DepartmentForm";
 
 export default async function Page(props: PageProps) {
-  const departmentId = props.params.id;
+  const departmentId = (await props.params).id;
 
   if (!departmentId) {
     return redirect("/organization/departments");
@@ -39,7 +39,7 @@ export default async function Page(props: PageProps) {
           <CardContent className="pt-5">
             <DepartmentForm
               defaultValues={department}
-              departmentId={props.params.id}
+              departmentId={departmentId}
             />
           </CardContent>
         </Card>

@@ -9,11 +9,8 @@ import { auth } from "@clerk/nextjs/server";
 import SupplierDashboard from "./vendor";
 import { Suspense } from "react";
 import StaffDashboard from "./staff";
-import { PageProps } from "@/lib/types";
 
-export default async function DashboardPage(props: PageProps) {
-  console.log(props);
-
+export default async function DashboardPage() {
   const { userId, sessionClaims } = await auth();
 
   if (sessionClaims?.userType === "vendor") {

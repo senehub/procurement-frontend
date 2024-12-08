@@ -4,18 +4,17 @@ import PageLayout from "@/components/page-layout";
 import { PageProps } from "@/lib/types";
 
 export default async function page(props: PageProps) {
+  const { slug, id } = await props.params;
   return (
     <PageLayout>
       <PageHeader
-        heading={`${props.params.slug[0].toUpperCase()}${props.params.slug.slice(
+        heading={`${slug?.[0].toUpperCase()}${slug?.slice(
           1
         )} | Approval Detail`}
       />
 
       <PageContent>
-        <h3 className="text-xl text-muted-foreground mb-5">
-          ID: {props.params.id}
-        </h3>
+        <h3 className="text-xl text-muted-foreground mb-5">ID: {id}</h3>
 
         <p className="text-sm leading-relaxed text-muted-foreground max-w-[70ch]">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit quaerat

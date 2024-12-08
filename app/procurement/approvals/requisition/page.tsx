@@ -8,12 +8,13 @@ const LazyStep = lazy(() => import("./ListSteps"));
 const LazyMatrixes = lazy(() => import("./ListMatrixes"));
 const LazyWorkflows = lazy(() => import("./ListWorkflows"));
 
-export default function page(props: PageProps) {
+export default async function page(props: PageProps) {
+  const { tab } = await props.searchParams;
   return (
     <PageLayout>
       <PageContent className="!mt-0 !pt-0">
         <Tabs
-          defaultValue={props.searchParams.tab || "matrixes"}
+          defaultValue={tab?.toString() || "matrixes"}
           className="w-full flex flex-col items-center justify-center"
         >
           <TabsList className="mx-auto">
