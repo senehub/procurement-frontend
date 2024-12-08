@@ -7,16 +7,16 @@ import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
 
 export const unitColumns: ColumnDef<UnitInterface>[] = [
-  {
-    header: "Ref. ID",
-    accessorFn: (unit) => shortenUUID(unit.id.toString()),
-  },
+  // {
+  //   header: "Ref. ID",
+  //   accessorFn: (unit) => shortenUUID(unit.id.toString()),
+  // },
   {
     header: "Name",
     accessorKey: "name",
   },
   {
-    header: "Stafs",
+    header: "Staffs",
     accessorFn: (unit) =>
       `${unit.staffsCount} ${unit.staffsCount > 1 ? "staffs" : "staff"}`,
   },

@@ -1,51 +1,49 @@
-import Link from 'next/link'
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import PageLayout from '@/components/page-layout'
-import PageContent from '@/components/page-content'
+import PageContent from "@/components/page-content";
+import PageHeader from "@/components/page-header";
+import PageLayout from "@/components/page-layout";
+import { lazy, Suspense, use } from "react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/tabs";
+import { TabsList } from "@radix-ui/react-tabs";
+import { PageProps } from "@/lib/types";
 
-export default function SuppliersPage() {
+const CreateInvitationLazy = lazy(
+  () => import("./invitations/CreateInvitation")
+);
+
+const SupplierPageLazy = lazy(() => import("./page.client"));
+const InvitationPageLazy = lazy(() => import("./invitations/page.client"));
+
+export default function Page(props: PageProps) {
+  const searchParams = use(props.searchParams);
+
   return (
     <PageLayout>
-      <h1 className="text-3xl font-bold mb-6">Suppliers</h1>
+      <PageHeader heading="Suppliers" />
       <PageContent>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Certificates</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-4">Manage supplier certificates</p>
-            <Link href="/suppliers/certificates">
-              <Button>View Certificates</Button>
-            </Link>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Registrations</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-4">Manage supplier registrations</p>
-            <Link href="/suppliers/registrations">
-              <Button>View Registrations</Button>
-            </Link>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Contact Persons</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-4">Manage supplier contact persons</p>
-            <Link href="/suppliers/contact_persons">
-              <Button>View Contact Persons</Button>
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
+        <Tabs defaultValue={searchParams.tab?.toString() || "suppliers"}>
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <TabsList className="bg-accent dark:bg-card p-1 px-2 rounded">
+              <TabsTrigger value="suppliers">Suppliers</TabsTrigger>
+              <TabsTrigger value="invitations">Invitations</TabsTrigger>
+            </TabsList>
+            <div className="inline-flex gap-2">
+              <Suspense key="invite">
+                <CreateInvitationLazy key={"invite"} />
+              </Suspense>
+            </div>
+          </div>
+          <Suspense>
+            <TabsContent value="suppliers">
+              <SupplierPageLazy />
+            </TabsContent>
+            <TabsContent value="invitations">
+              <InvitationPageLazy />
+            </TabsContent>
+          </Suspense>
+        </Tabs>
       </PageContent>
     </PageLayout>
-  )
+  );
 }
-

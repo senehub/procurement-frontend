@@ -353,8 +353,9 @@ export default function ProcurementCreationForm() {
                   <FormControl>
                     <DatetimePicker
                       value={
-                        field.value ||
-                        setMinutes(setHours(addDays(new Date(), 25), 12), 0)
+                        field.value
+                        // ||
+                        // setMinutes(setHours(addDays(new Date(), 25), 12), 0)
                       }
                       format={[
                         ["days", "months", "years"],

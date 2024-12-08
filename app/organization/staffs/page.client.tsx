@@ -28,5 +28,8 @@ export default function StaffPage() {
       columns={staffColumns}
       onRowClick={({ id }) => router.push(`/organization/staffs/${id}`)}
     />
+    // <pre>
+    //   <code>{JSON.stringify(staffColumns, null, 4)}</code>
+    // </pre>
   );
 }

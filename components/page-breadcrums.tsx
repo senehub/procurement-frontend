@@ -21,10 +21,16 @@ import { useMemo } from "react";
 export default function PageBreadcrumb() {
   const pathname = usePathname();
 
-  const segments = useMemo(
-    () => pathname.split("/").filter(Boolean),
-    [pathname]
-  );
+  const segments = useMemo(() => {
+    const links = pathname
+      .split("/")
+      .filter(Boolean)
+      .map((link) => ({
+        id: Date.now(),
+        href: link,
+      }));
+    return links;
+  }, [pathname]);
 
   const dropdownSegments = useMemo(() => {
     if (segments.length > 3) return segments.slice(0, segments.length - 3);
@@ -52,9 +58,17 @@ export default function PageBreadcrumb() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="grid">
                   {dropdownSegments.map((segment, index) => {
+                    const href = segments
+                      .slice(0, index + 1)
+                      .reduce((a, c) => {
+                        a.push(c.href);
+                        return a;
+                      }, [] as string[])
+                      .join("/");
+
                     return (
                       <DropdownMenuItem
-                        key={segment + index}
+                        key={`${index}-${segment.id}`}
                         className="capitalize"
                         style={{
                           order: `${dropdownSegments.length - index + 1}`,
@@ -62,9 +76,10 @@ export default function PageBreadcrumb() {
                       >
                         <BreadcrumbLink
                           className="capitalize"
-                          href={`/${segments.slice(0, index + 1).join("/")}`}
+                          href={`/${href}`}
                         >
-                          {segment.charAt(0).toUpperCase() + segment.slice(1)}
+                          {segment.href.charAt(0).toUpperCase() +
+                            segment.href.slice(1)}
                         </BreadcrumbLink>
                       </DropdownMenuItem>
                     );
@@ -79,28 +94,35 @@ export default function PageBreadcrumb() {
         )}
         {segments
           .slice(dropdownSegments.length, segments.length - 1)
-          .map((segment, index) => (
-            <>
-              <BreadcrumbItem key={segment + index}>
-                <BreadcrumbLink
-                  className="capitalize"
-                  href={`/${segments
-                    .slice(0, index + dropdownSegments.length + 1)
-                    .join("/")}`}
-                >
-                  {segment.charAt(0).toUpperCase() + segment.slice(1)}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              {!!segments[index + 1] && (
-                <BreadcrumbSeparator>
-                  <Slash />
-                </BreadcrumbSeparator>
-              )}
-            </>
-          ))}
+          .map((segment, index) => {
+            const href = segments
+              .slice(0, index + dropdownSegments.length + 1)
+              .reduce((a, c) => {
+                a.push(c.href);
+                return a;
+              }, [] as string[])
+              .join("/");
+
+            return (
+              <>
+                <BreadcrumbItem key={`${index}-${segment.id}`}>
+                  <BreadcrumbLink className="capitalize" href={`/${href}`}>
+                    {segment.href.charAt(0).toUpperCase() +
+                      segment.href.slice(1)}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                {!!segments[index + 1] && (
+                  <BreadcrumbSeparator>
+                    <Slash />
+                  </BreadcrumbSeparator>
+                )}
+              </>
+            );
+          })}
         <BreadcrumbItem className="min-h-4">
-          <BreadcrumbPage className="capitalize">
-            {segments.at(-1)}
+          <BreadcrumbPage className="capitalize text-sm">
+            {segments.at(-1)?.href.charAt(0).toUpperCase()}
+            {segments.at(-1)?.href.slice(1)}
           </BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>

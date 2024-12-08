@@ -1,21 +1,11 @@
-import DataTable from "@/components/data-table";
 import PageContent from "@/components/page-content";
 import PageHeader from "@/components/page-header";
 import PageLayout from "@/components/page-layout";
 import React from "react";
-import { invitaionColumns } from "./columns";
-import { getInvitations } from "./page.actions";
 import CreateInvitation from "./CreateInvitation";
+import InvitationPage from "./page.client";
 
 export default async function Page() {
-  const invitaions = await getInvitations();
-
-  if (invitaions.error)
-    return (
-      <pre>
-        <code>{JSON.stringify(invitaions)}</code>
-      </pre>
-    );
   return (
     <PageLayout>
       <PageHeader
@@ -23,11 +13,7 @@ export default async function Page() {
         actions={[<CreateInvitation key="new" />]}
       />
       <PageContent>
-        <DataTable
-          rowId={"id"}
-          data={invitaions.data.data}
-          columns={invitaionColumns}
-        />
+        <InvitationPage />
       </PageContent>
     </PageLayout>
   );

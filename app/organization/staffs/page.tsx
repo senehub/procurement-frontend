@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import StaffPage from "./page.client";
 
-export default function page() {
+export default async function page() {
   return (
     <PageLayout>
       <PageHeader

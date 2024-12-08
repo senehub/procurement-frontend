@@ -6,7 +6,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { InvitationInterface } from "./page.actions";
 
-export const invitaionColumns: ColumnDef<InvitationInterface>[] = [
+export const invitationColumns: ColumnDef<InvitationInterface>[] = [
   {
     header: "ID",
     accessorFn: (inv) => shortenUUID(inv.id, 50),

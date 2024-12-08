@@ -12,7 +12,7 @@ import {
 import { Card } from "@/components/ui/card";
 import { Button } from "../ui/button";
 import { Columns2Icon, DownloadIcon, Loader2 } from "lucide-react";
-import { downloadHTMLAsPdf } from "@/lib/client/htmt2PDF";
+// import { downloadHTMLAsPdf } from "@/lib/client/htmt2PDF";
 import { Fragment, ReactNode, useRef } from "react";
 import {
   ColumnDef,
@@ -48,20 +48,21 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
   };
 
   async function downloadTable() {
-    const element = dataTableRef.current;
-    if (!element) return;
-    downloadHTMLAsPdf({
-      IgnoreElement: (element) => element.hasAttribute("data-ignore-print"),
-      onCallback: (error) => {
-        if (error) {
-          alert(error.message);
-          return;
-        }
-        alert("Downloaded");
-      },
-      target: element,
-      filename: "inventory-data.pdf",
-    });
+    return;
+    // const element = dataTableRef.current;
+    // if (!element) return;
+    // downloadHTMLAsPdf({
+    //   IgnoreElement: (element) => element.hasAttribute("data-ignore-print"),
+    //   onCallback: (error) => {
+    //     if (error) {
+    //       alert(error.message);
+    //       return;
+    //     }
+    //     alert("Downloaded");
+    //   },
+    //   target: element,
+    //   filename: "inventory-data.pdf",
+    // });
   }
 
   const dataTableRef = useRef<HTMLDivElement>(null);
@@ -80,8 +81,11 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
   const isLoading = props.data === undefined;
 
   return (
-    <Card className="overflow-hidden p-0 " ref={dataTableRef}>
-      <div className="p-2">
+    <Card
+      className="overflow-hidden p-0 shadow-none border-0 bg-accent dark:bg-card dark:text-card-foreground text-accent-foreground"
+      ref={dataTableRef}
+    >
+      <div className="p-2 py-0">
         <div className="flex mx-auto flex-wrap gap-2 px-2 items-center justify-between">
           <div className="inline-flex gap-2">
             <Button
@@ -89,12 +93,16 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
               size={"icon"}
               variant={"secondary"}
               className="rounded"
+              onClick={() => {
+                // table.setPageSize(table.getState().pagination.pageSize + 10);
+              }}
             >
               <Columns2Icon />
             </Button>
           </div>
           <div className="inline-flex gap-2">
             <Button
+              title="Download"
               data-ignore-print
               onClick={downloadTable}
               size={"icon"}
@@ -110,7 +118,7 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
           </div>
         </div>
       </div>
-      <Card className="pb-1 rounded-t-3xl bg-background overflow-clip">
+      <Card className="pb-1 rounded-t-2xl lg:rounded-t-3xl bg-background overflow-clip">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => {
@@ -122,10 +130,12 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
                   {headerGroup.headers.map((header) => {
                     return (
                       <TableHead key={header.id}>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        <span className="text-xs">
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                        </span>
                       </TableHead>
                     );
                   })}
@@ -144,7 +154,7 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
                       onRowSelect(ev, row.original);
                     }}
                     className={cn(
-                      "",
+                      "py-2",
                       props.onRowClick
                         ? "cursor-pointer"
                         : "hover:bg-transparent"
@@ -155,21 +165,23 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
                     </TableCell>
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
+                        <span className="text-sm">
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </span>
                       </TableCell>
                     ))}
                   </TableRow>
                 );
               })
             ) : (
-              <TableRow>
+              <TableRow className={cn(isLoading && "pointer-events-none")}>
                 <TableCell colSpan={props.columns.length + 1}>
                   <div className="w-full h-24 flex items-center justify-center">
                     {isLoading && (
-                      <Loader2 className="animate-spin w-6 h-6 max-md:stroke-2" />
+                      <Loader2 className="animate-spin w-6 h-6 lg:w-10 lg:h-10 max-md:stroke-[2px]" />
                     )}
                     {!isLoading && <span>No Results.</span>}
                   </div>

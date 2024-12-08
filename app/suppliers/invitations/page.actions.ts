@@ -17,16 +17,22 @@ export type InvitationInterface = {
   };
 };
 
-export async function getInvitations(): Promise<
+export async function getInvitations(
+  limit?: number,
+  offset?: number
+): Promise<
   ServerActionResponse<{
     data: InvitationInterface[];
     totalCount: number;
   }>
 > {
   try {
-    const invitaions = await _clerkClient.invitations.getInvitationList({});
+    const invitations = await _clerkClient.invitations.getInvitationList({
+      limit: limit,
+      offset: offset,
+    });
 
-    const data = invitaions.data.map(
+    const data = invitations.data.map(
       ({
         id,
         emailAddress,
@@ -50,7 +56,7 @@ export async function getInvitations(): Promise<
     return {
       data: {
         data,
-        totalCount: invitaions.totalCount,
+        totalCount: invitations.totalCount,
       },
     };
   } catch (error) {
@@ -64,14 +70,13 @@ export async function getInvitations(): Promise<
   }
 }
 
-interface InivationData {
+interface InvitationData {
   emailAddress: string;
-  lastName?: string;
-  firstName?: string;
+  companyName?: string;
 }
 
-export async function createIntitation(
-  data: InivationData
+export async function createInvitation(
+  data: InvitationData
 ): Promise<ServerActionResponse<null>> {
   try {
     await _clerkClient.invitations.createInvitation({
@@ -80,9 +85,9 @@ export async function createIntitation(
       //   ignoreExisting: false,
       emailAddress: data.emailAddress!,
       publicMetadata: {
-        lastName: data.lastName,
-        firstName: data.firstName,
+        companyName: data.companyName,
       },
+      redirectUrl: process.env.CLERK_INVITATION_REDIRECT_URL,
     });
 
     revalidatePath("/suppliers/invitations", "page");

@@ -21,16 +21,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
+import { Loader2, PlusIcon } from "lucide-react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { createIntitation } from "./page.actions";
+import { createInvitation } from "./page.actions";
 
 const formSchema = z.object({
   emailAddress: z.string().email(),
-  lastName: z.string().max(50).optional(),
-  firstName: z.string().max(50).optional(),
+  companyName: z.string().max(50).optional(),
   expiry: z.string().refine((value) => {
     if (isNaN(parseInt(value))) return false;
 
@@ -51,16 +50,15 @@ export default function CreateInvitation() {
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
     try {
-      const response = await createIntitation({
+      const response = await createInvitation({
         emailAddress: data.emailAddress,
-        firstName: data.firstName!,
-        lastName: data.lastName!,
+        companyName: data.companyName,
       });
       if (response.error) throw new Error(response.message);
       form.reset();
       toast({
         title: `Invitation Sent`,
-        description: "Your invitaion is successfully sent.",
+        description: "Your invitation is successfully sent.",
       });
       setIsOpen(false);
     } catch (error: unknown) {
@@ -77,10 +75,12 @@ export default function CreateInvitation() {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button>New Invitation</Button>
+        <Button>
+          <PlusIcon className="w-4 h-4" /> Invite
+        </Button>
       </DialogTrigger>
       <DialogContent className="p-0 overflow-hidden rounded">
-        <DialogHeader className="p-4 bg-accent border-b">
+        <DialogHeader className="p-4 bg-accent dark:bg-accent/50 border-b">
           <DialogTitle>Invite Supplier</DialogTitle>
           <DialogDescription>
             Invite suppliers to join your system
@@ -90,6 +90,22 @@ export default function CreateInvitation() {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <div className="px-4 pb-5 space-y-6">
+                <FormField
+                  control={form.control}
+                  name="companyName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="company or supplier name"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <FormField
                   control={form.control}
                   name="emailAddress"
@@ -108,35 +124,6 @@ export default function CreateInvitation() {
                   )}
                 />
 
-                <div className="grid sm:grid-cols-2 gap-x-2 gap-y-5">
-                  <FormField
-                    control={form.control}
-                    name="firstName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>First Name</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="optional" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />{" "}
-                  <FormField
-                    control={form.control}
-                    name="lastName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Last Name</FormLabel>
-                        <FormControl>
-                          <Input {...field} placeholder="optional" />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
                 <FormField
                   control={form.control}
                   name="expiry"
@@ -144,7 +131,7 @@ export default function CreateInvitation() {
                     <FormItem>
                       <div className="grid gap-1">
                         <FormLabel>Set invitation Expiry</FormLabel>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="text-xs text-muted-foreground py-2">
                           Invite links will expire after the specified number of
                           days
                         </p>
@@ -169,7 +156,7 @@ export default function CreateInvitation() {
                   )}
                 />
               </div>
-              <DialogFooter className="p-4 bg-accent border-t">
+              <DialogFooter className="p-4 bg-accent dark:bg-accent/50 border-t">
                 <Button
                   disabled={form.formState.isSubmitting}
                   className="rounded-sm"
