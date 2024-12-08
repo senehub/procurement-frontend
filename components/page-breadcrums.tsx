@@ -54,7 +54,7 @@ export default function PageBreadcrumb() {
                   {dropdownSegments.map((segment, index) => {
                     return (
                       <DropdownMenuItem
-                        key={segment}
+                        key={segment + index}
                         className="capitalize"
                         style={{
                           order: `${dropdownSegments.length - index + 1}`,
@@ -81,7 +81,7 @@ export default function PageBreadcrumb() {
           .slice(dropdownSegments.length, segments.length - 1)
           .map((segment, index) => (
             <>
-              <BreadcrumbItem key={index}>
+              <BreadcrumbItem key={segment + index}>
                 <BreadcrumbLink
                   className="capitalize"
                   href={`/${segments

@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import PageLayout from "@/components/page-layout";
 import PageContent from "@/components/page-content";
 import PageHeader from "@/components/page-header";
@@ -14,9 +20,9 @@ export default function OrganizationPage() {
           <Card>
             <CardHeader>
               <CardTitle>Staffs</CardTitle>
+              <CardDescription>Manage organization staff</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="mb-4">Manage organization staff</p>
               <Link href="/organization/staffs">
                 <Button>View Staffs</Button>
               </Link>
@@ -25,9 +31,9 @@ export default function OrganizationPage() {
           <Card>
             <CardHeader>
               <CardTitle>Units</CardTitle>
+              <CardDescription>Manage organizational units</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="mb-4">Manage organizational units</p>
               <Link href="/organization/units">
                 <Button>View Units</Button>
               </Link>
@@ -36,9 +42,9 @@ export default function OrganizationPage() {
           <Card>
             <CardHeader>
               <CardTitle>Departments</CardTitle>
+              <CardDescription>Manage departments</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="mb-4">Manage departments</p>
               <Link href="/organization/departments">
                 <Button>View Departments</Button>
               </Link>
@@ -47,11 +53,24 @@ export default function OrganizationPage() {
           <Card>
             <CardHeader>
               <CardTitle>Annual Plans</CardTitle>
+              <CardDescription>View and manage annual plans</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="mb-4">View and manage annual plans</p>
               <Link href="/organization/annual_plans">
                 <Button>View Annual Plans</Button>
+              </Link>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Invite Suppliers</CardTitle>
+              <CardDescription>
+                Invite suppliers to participate in the procurement process
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link href="/suppliers/invitations">
+                <Button>Invite Suppliers</Button>
               </Link>
             </CardContent>
           </Card>

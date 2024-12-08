@@ -80,8 +80,8 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
   const isLoading = props.data === undefined;
 
   return (
-    <Card className="overflow-hidden p-0" ref={dataTableRef}>
-      <div className="border-b p-2">
+    <Card className="overflow-hidden p-0 " ref={dataTableRef}>
+      <div className="p-2">
         <div className="flex mx-auto flex-wrap gap-2 px-2 items-center justify-between">
           <div className="inline-flex gap-2">
             <Button
@@ -110,14 +110,14 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
           </div>
         </div>
       </div>
-      <div className="px-4 pb-4">
+      <Card className="pb-1 rounded-t-3xl bg-background overflow-clip">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => {
               return (
-                <TableRow key={headerGroup.id}>
+                <TableRow key={headerGroup.id} className="px-2">
                   <TableHead className="w-max">
-                    <small>#</small>
+                    <small className="pl-2">#</small>
                   </TableHead>
                   {headerGroup.headers.map((header) => {
                     return (
@@ -133,7 +133,7 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
               );
             })}
           </TableHeader>
-          <TableBody>
+          <TableBody className="min-h-24">
             {table.getRowModel().rows.length > 0 ? (
               table.getRowModel().rows.map((row, index) => {
                 return (
@@ -144,13 +144,14 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
                       onRowSelect(ev, row.original);
                     }}
                     className={cn(
+                      "",
                       props.onRowClick
                         ? "cursor-pointer"
                         : "hover:bg-transparent"
                     )}
                   >
                     <TableCell className="w-max text-muted-foreground">
-                      <small>{index + 1}.</small>
+                      <small className="pl-2">{index + 1}.</small>
                     </TableCell>
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
@@ -165,18 +166,19 @@ export default function DataTable<TD, TV>(props: DataTableProps<TD, TV>) {
               })
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={props.columns.length + 1}
-                  className="h-24 text-center flex items-center justify-center"
-                >
-                  {isLoading && <Loader2 className="aminate-spin w-6 h-6" />}
-                  {!isLoading && <span>No Results.</span>}
+                <TableCell colSpan={props.columns.length + 1}>
+                  <div className="w-full h-24 flex items-center justify-center">
+                    {isLoading && (
+                      <Loader2 className="animate-spin w-6 h-6 max-md:stroke-2" />
+                    )}
+                    {!isLoading && <span>No Results.</span>}
+                  </div>
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </div>
+      </Card>
     </Card>
   );
 }

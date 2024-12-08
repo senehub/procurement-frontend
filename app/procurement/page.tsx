@@ -59,6 +59,19 @@ export default function ProcurementPage() {
           </Card>
           <Card>
             <CardHeader>
+              <CardTitle>Invite Suppliers</CardTitle>
+              <CardDescription>
+                Invite suppliers to participate in the procurement process
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Link href="/suppliers/invitations">
+                <Button>Invite Suppliers</Button>
+              </Link>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
               <CardTitle>Approval Managament</CardTitle>
               <CardDescription>
                 Manage the approval process for procurement requests
